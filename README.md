@@ -32,7 +32,7 @@ pip install -r requirements.txt
 ### Basic Usage
 
 ```python
-from scrapers.weather_scraper import WeatherScraper
+from examples.weather_scraper import WeatherScraper
 
 # Create an instance of the weather scraper
 scraper = WeatherScraper()
@@ -74,9 +74,8 @@ result = scraper.scrape(
 weather-scraper/
 ├── .gitignore
 ├── README.md
-├── main.py                 # Main entry point
 ├── requirements.txt        # Project dependencies
-├── scrapers/               # Specific scraper implementations
+├── examples/               # Specific scraper implementations
 │   ├── __init__.py
 │   └── weather_scraper.py  # Weather API scraper
 └── src/                    # Core framework
@@ -107,7 +106,7 @@ Provides parsers for different content types:
 
 Abstract base class that integrates the requester and parser components and defines the core scraping workflow.
 
-### WeatherScraper (`scrapers/weather_scraper.py`)
+### WeatherScraper (`examples/weather_scraper.py`)
 
 Implementation of the BaseScraper specific to Data.gov.sg's weather API, with custom data extraction logic.
 
@@ -127,10 +126,6 @@ Contributions are welcome! Here's how you can contribute:
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-## License
-
-[MIT](https://choosealicense.com/licenses/mit/)
 
 ## Contact
 
