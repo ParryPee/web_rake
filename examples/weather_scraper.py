@@ -112,15 +112,3 @@ class WeatherScraper(BaseScraper):
                 'error': f"Failed to parse weather data: {str(e)}",
                 'raw_data': parsed_content
             }
-
-
-if __name__ == "__main__":
-    # Create an instance of the weather scraper
-    scraper = WeatherScraper()
-    
-    # Scrape the weather data
-    result = scraper.scrape("https://api.data.gov.sg/v1/environment/24-hour-weather-forecast")
-    
-    # Print the result
-    import json
-    print(json.dumps(result, indent=2))
