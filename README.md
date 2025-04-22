@@ -1,13 +1,13 @@
-# Weather Scraper
+# Web Scraper
 
-A modular and extensible web scraping framework designed specifically for fetching and parsing weather data from Data.gov.sg's weather API.
+A modular and extensible web scraping framework designed specifically for fetching and parsing data
 
 ## Features
 
 - Robust HTTP requesting with built-in retry logic, rate limiting, and robots.txt compliance
 - Multiple parser types (HTML, JSON, XML) with a unified interface
 - Modular architecture allowing easy extension for different data sources
-- Specific implementation for Data.gov.sg's weather API
+- Specific implementation for Data.gov.sg's weather API (Example)
 - Configurable request parameters (headers, timeouts, user agent rotation)
 
 ## Installation
@@ -29,7 +29,7 @@ pip install -r requirements.txt
 
 ## Usage
 
-### Basic Usage
+### Basic Usage (Example shown with dataGov)
 
 ```python
 from examples.weather_scraper import WeatherScraper
@@ -45,7 +45,7 @@ result = scraper.scrape(url)
 print(result)
 ```
 
-### Advanced Configuration
+### Advanced Configuration (Example shown with dataGov)
 
 ```python
 from scrapers.weather_scraper import WeatherScraper
