@@ -5,6 +5,7 @@ from abc import abstractmethod
 import random
 from urllib.robotparser import RobotFileParser
 from requests.exceptions import RequestException
+import json
 
 
 class Requester:
@@ -133,6 +134,40 @@ class Requester:
                 else:
                     self.logger.error(f"Request failed after {self.retry_count+1} attempts")
                     raise
+    
+    def post(self,url,body = None,**kwargs):
+        if not self._check_robots_txt(url):
+            self.logger.warning(f"ROBOTS.TXT DOES NOT ALLOW SCRAPING FOR {url}")
+            raise PermissionError(f"Robots.txt disallows scraping")
+        merged_kwargs = {
+            'timeout': self.timeout,
+            'verify': self.verify_ssl
+
+
+        }
+        merged_kwargs.update(kwargs)
+        for attempt in range(self.retry_count + 1):
+            try:
+                self._rotate_user_agent()
+                self._respect_rate_limit()
+                
+                resp = self.session.post(url, json=body)
+                resp.raise_for_status()
+                
+                return resp
+            except RequestException as e:
+                self.logger.warning(f"Request failed (attempt {attempt+1}/{self.retry_count+1}): {str(e)}")
+                
+                if attempt < self.retry_count:
+                    # Exponential backoff
+                    sleep_time = self.retry_delay * (2 ** attempt)
+                    self.logger.info(f"Retrying in {sleep_time} seconds")
+                    time.sleep(sleep_time)
+                else:
+                    self.logger.error(f"Request failed after {self.retry_count+1} attempts")
+                    raise
+                
+
 
 
 

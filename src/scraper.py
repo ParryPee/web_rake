@@ -27,9 +27,9 @@ class BaseScraper(ABC):
         Returns:
             dict: Extracted data
         """
-        pass
+        return parsed_content
     
-    def fetch(self, url, params=None, **kwargs):
+    def fetch(self, url, params=None, protocol="GET", **kwargs):
         """Fetch content from the given URL using the requester.
         
         Args:
@@ -40,8 +40,13 @@ class BaseScraper(ABC):
         Returns:
             str: Raw content
         """
-        response = self.requester.get(url, params=params, **kwargs)
-        return response.text
+        if protocol == "GET":
+            response = self.requester.get(url, params=params, **kwargs)
+            return response.text
+        elif protocol == "POST":
+            json_body = kwargs["body"]
+            response = self.requester.post(url,json_body)
+            return response.text
     
     def parse(self, content):
         """Parse the content using the parser.
@@ -54,7 +59,7 @@ class BaseScraper(ABC):
         """
         return self.parser.parse(content)
     
-    def scrape(self, url, params=None, **kwargs):
+    def scrape(self, url, params=None,protocol = "GET", **kwargs):
         """Main method to perform scraping operation.
         
         Args:
@@ -65,6 +70,14 @@ class BaseScraper(ABC):
         Returns:
             dict: Extracted data
         """
-        content = self.fetch(url, params, **kwargs)
-        parsed_content = self.parse(content)
-        return self.extract_data(parsed_content)
+        if protocol == "GET":
+            content = self.fetch(url, params, **kwargs)
+            parsed_content = self.parse(content)
+            return self.extract_data(parsed_content)
+        elif protocol == "POST":
+            body = kwargs["body"]
+            content = self.fetch(url,params,protocol,body=body)
+            parsed_content = self.parse(content)
+            return self.extract_data(parsed_content)
+        
+        
